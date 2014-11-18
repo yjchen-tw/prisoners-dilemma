@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from game.views import HelloView
+from game.views import GameSimulationView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,8 +8,8 @@ from game.views import HelloView
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'pd_game.views.home', name='home'),
-    url(r'^$', HelloView.as_view()),
-    # url(r'^pd_game/', include('pd_game.foo.urls')),
+    url(r'^$', GameSimulationView.as_view()),
+    #url(r'^game/', include('game.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
