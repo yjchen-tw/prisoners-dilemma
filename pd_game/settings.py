@@ -2,11 +2,28 @@
 
 import os
 
+from os.path import abspath, basename, dirname, join, normpath
+from sys import path
+
 # Initialize App Engine and import the default settings (DB backend, etc.).
 # If you want to use a different backend you have to remove all occurences
 # of "djangoappengine" from this file.
 from djangoappengine.settings_base import *
 
+########## PATH CONFIGURATION
+# Absolute filesystem path to the Django project directory:
+DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+
+# Absolute filesystem path to the top-level project folder:
+SITE_ROOT = dirname(DJANGO_ROOT)
+
+# Site name:
+SITE_NAME = basename(DJANGO_ROOT)
+
+# Add our project to our pythonpath, this way we don't need to type our project
+# name in our dotted import paths:
+path.append(DJANGO_ROOT)
+########## END PATH CONFIGURATION
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -72,6 +89,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    normpath(join(DJANGO_ROOT, 'static')),
 )
 
 # List of finder classes that know how to find static files in
@@ -108,9 +126,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'pd_game.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    normpath(join(DJANGO_ROOT, 'templates')),
 )
 
 INSTALLED_APPS = (
