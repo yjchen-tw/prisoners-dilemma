@@ -30,9 +30,9 @@ class Tournament(object):
 
 
 if __name__ == '__main__':
-    player1 = player.Cooperator(2)
-    player2 = player.TitForTatPlayer(3)
-    player3 = player.Player(1)
+    player1 = player.Cooperator()
+    player2 = player.TitForTatPlayer()
+    player3 = player.Player()
     a = Tournament([player1, player2, player3])
     a.start_tournament()
     print a.get_simulation_data()
