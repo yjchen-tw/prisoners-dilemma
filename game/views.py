@@ -26,7 +26,7 @@ class GameSimulationView(FormView):
     form_class = TournamentInfoForm
     success_url = '/'
 
-    def _append_label_for_legned(self, payoff_list):
+    def _append_label_for_legend(self, payoff_list):
         for player_type in FORM_FIELD_TO_PLAYER_OBJECT.values():
             for payoff in payoff_list:
                 if payoff['color'] == player_type.color:
@@ -43,7 +43,7 @@ class GameSimulationView(FormView):
         tournament = Tournament(players)
         tournament.start_tournament()
         simulation_data = tournament.get_simulation_data()
-        self._append_label_for_legned(simulation_data['payoff_list'])
+        self._append_label_for_legend(simulation_data['payoff_list'])
         LOGGER.info('{}'.format(simulation_data))
         context = {'simulation_data': simulation_data, 'form': form}
         return render(self.request, 'simulation.html', context)
