@@ -11,7 +11,14 @@ FORM_FIELD_TO_PLAYER_OBJECT = {
 
 
 class TournamentInfoForm(forms.Form):
-    random_player = forms.IntegerField()
-    cooperator = forms.IntegerField()
-    betrayer = forms.IntegerField()
-    tit_for_tat_player = forms.IntegerField()
+    random_player = forms.IntegerField(min_value=0)
+    cooperator = forms.IntegerField(min_value=0)
+    betrayer = forms.IntegerField(min_value=0)
+    tit_for_tat_player = forms.IntegerField(min_value=0)
+
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        if sum(cleaned_data.values()) > 30:
+            raise forms.ValidationError(
+                "Too much players, number of total players should less than 30.")
+        return cleaned_data
