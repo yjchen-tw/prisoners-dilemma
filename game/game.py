@@ -21,7 +21,7 @@ class Game(object):
             players[1].play_against(id(players[0]))
         ]
         self.strategies = strategies
-        print strategies
+        # print strategies
 
         if strategies[0] == COOPERATION and strategies[1] == COOPERATION:
             for player in self.players:
@@ -35,3 +35,13 @@ class Game(object):
         else:
             for player in self.players:
                 player.increase_payoff(Payoff.BETRAY_EACH_OTHER)
+
+        self._send_record_to_players()
+
+    def _send_record_to_players(self):
+       strategies = self.strategies
+       self.players[0].save_game_record(
+           id(self.players[1]), (strategies[1], strategies[0]))
+       self.players[1].save_game_record(
+           id(self.players[0]), (strategies[0], strategies[1]))
+

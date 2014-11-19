@@ -1,9 +1,59 @@
 {% extends "base.html" %}
 
+{% block extra_css %}
+<style type="text/css">
+
+#placeholder {
+    width: 90%;
+    height: 600px;
+    left: 5%;
+}
+
+</style>
+{% endblock %}
+
 {% block main_container %}
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Simulate" />
 </form>
+<div id="placeholder"> </div>
+{% endblock %}
+{% block extra_js %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}js/jquery.flot.min.js"> </script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}js/jquery.flot.categories.min.js"> </script>
+<script type="text/javascript">
+(function() {
+
+//$("label[for='id_tit_for_tat_player']").css('color', 'yellow');
+
+{% if simulation_data %}
+var simulation_data = {{simulation_data.payoff_list|safe}};
+var ticks = {{simulation_data.name_list|safe}};
+
+if(ticks.length > 15)
+   ticks = [];
+
+$.plot('#placeholder', simulation_data, {
+    series: {
+        bars : {
+            show: true,
+            barWidth: 0.6,
+            align: "center",
+            fill: .75,
+            lineWidth: 0,
+        }
+    },
+    xaxis: {
+        ticks: ticks
+    },
+    legend: {
+        noColumns: 0
+    }
+});
+{% endif %}
+})();
+</script>
+
 {% endblock %}
