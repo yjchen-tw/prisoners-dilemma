@@ -1,24 +1,13 @@
-# Create your views here.
 import logging
 
 from django.shortcuts import render
-
-LOGGER = logging.getLogger(__name__)
-
-from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
-from django.views.generic.base import View
-from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import TournamentInfoForm
 from .forms import FORM_FIELD_TO_PLAYER_OBJECT
 from tournament import Tournament
 
-
-class HelloView(View):
-
-    def get(self, request):
-        return HttpResponse("Hello world")
+LOGGER = logging.getLogger(__name__)
 
 
 class GameSimulationView(FormView):
@@ -33,17 +22,21 @@ class GameSimulationView(FormView):
                     payoff['label'] = player_type.name_prefix
                     break
 
-    def form_valid(self, form):
-        form_data = form.cleaned_data
-        LOGGER.info('{}'.format(form_data))
+    def _generate_players(self, tournament_info):
         players = []
-        for key, num in form_data.items():
+        for key, num in tournament_info.items():
             players.extend([FORM_FIELD_TO_PLAYER_OBJECT[key](i) for i in range(num)])
-        LOGGER.info('{}'.format(players))
+        return players
+
+    def _run_simulation(self, players):
         tournament = Tournament(players)
         tournament.start_tournament()
         simulation_data = tournament.get_simulation_data()
         self._append_label_for_legend(simulation_data['payoff_list'])
-        LOGGER.info('{}'.format(simulation_data))
+        return simulation_data
+
+    def form_valid(self, form):
+        players = self._generate_players(form.cleaned_data)
+        simulation_data = self._run_simulation(players)
         context = {'simulation_data': simulation_data, 'form': form}
         return render(self.request, 'simulation.html', context)
