@@ -39,9 +39,8 @@ class Game(object):
         self._send_record_to_players()
 
     def _send_record_to_players(self):
-       strategies = self.strategies
-       self.players[0].save_game_record(
-           id(self.players[1]), (strategies[1], strategies[0]))
-       self.players[1].save_game_record(
-           id(self.players[0]), (strategies[0], strategies[1]))
-
+        strategies = self.strategies
+        self.players[0].save_game_record(
+            id(self.players[1]), (strategies[1], strategies[0]))
+        self.players[1].save_game_record(
+            id(self.players[0]), (strategies[0], strategies[1]))
